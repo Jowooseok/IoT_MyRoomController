@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class StatementProvider with ChangeNotifier, DiagnosticableTreeMixin {
-  String testTitle = "Hello World";
+  int _bottomNavIndex = 0;
 
-  String getTestTitle() => testTitle;
+  int getBottomNavIndex() => _bottomNavIndex;
 
-  void setTitle(String value) {
-    testTitle = value;
+  void setBottomNavIndex(int value) {
+    _bottomNavIndex = value;
     notifyListeners();
   }
 }

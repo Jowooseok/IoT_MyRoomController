@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:mdi/mdi.dart';
+
 import 'package:handhouse/statementProvider.dart';
 
 void main() {
@@ -18,59 +20,81 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Hand House',
+      home: MyHomePage(title: 'Hand House'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
+  MyHomePage({this.title});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _selectedIndex = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  List<Widget> _widgetOptions = [
+    //각각의 화면 구성
+    Text('hi1'),
+    Text('hi2'),
+    Text('hi3'),
+    Text('hi4'),
+    Text('hi5'),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              Provider.of<StatementProvider>(context, listen: false)
-                  .getTestTitle(),
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        backgroundColor: Colors.white,
+        title: Text(
+          widget.title,
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: Icon(
+          Icons.menu,
+          color: Colors.black,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Mdi.windowClosedVariant),
+            label: '창문',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Mdi.airConditioner),
+            label: '에어컨',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '홈',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Mdi.waterBoiler),
+            label: '보일러',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Mdi.airHumidifier),
+            label: '가습기',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        type: BottomNavigationBarType.fixed,
+        onTap: (i) => {
+          setState(() {
+            _selectedIndex = i;
+          })
+        },
+      ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
     );
   }
 }
