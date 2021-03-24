@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hand House',
-      home: MyHomePage(title: 'Hand House'),
+      title: '내방 날씨',
+      home: MyHomePage(title: '내방 날씨'),
     );
   }
 }
@@ -35,168 +35,112 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 2; //하단 네비게이션 바 인덱스
 
   List<Widget> _widgetOptions = [
     //각각의 화면 구성
     Text('hi1'),
     Text('hi2'),
     Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          flex: 1,
+          flex: 7,
           child: Row(
             children: [
               Expanded(
-                  child: Icon(
-                Mdi.bedDoubleOutline,
-                size: 40.0,
-                color: Colors.grey,
-              )),
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Icon(
+                        Mdi.bedDoubleOutline,
+                        size: 40.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.amberAccent.shade100,
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
-                child: Icon(
-                  Mdi.weatherSunny,
-                  size: 40.0,
-                  color: Colors.grey,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Icon(
+                        Mdi.weatherSunny,
+                        size: 40.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
         Expanded(
-          flex: 4,
+          flex: 3,
           child: Row(
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amberAccent.shade100,
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent.shade100,
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Row(
-            children: [
-              Expanded(
-                child: Icon(
-                  Mdi.windowOpenVariant,
-                  size: 35.0,
-                  color: Colors.grey,
-                ),
-              ),
-              Expanded(
-                child: Icon(
-                  Mdi.airConditioner,
-                  size: 35.0,
-                  color: Colors.grey,
-                ),
-              ),
-              Expanded(
-                child: Icon(
-                  Mdi.waterBoiler,
-                  size: 35.0,
-                  color: Colors.grey,
-                ),
-              ),
-              Expanded(
-                child: Icon(
-                  Mdi.airHumidifier,
-                  size: 35.0,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Row(
-            children: [
-              Expanded(
-                child: ConstrainedBox(
-                  constraints:
-                      BoxConstraints.tightFor(width: 40.0, height: 40.0),
-                  child: ElevatedButton(
-                    child: Text(
-                      'ON',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      primary: Colors.blue,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ConstrainedBox(
-                  constraints:
-                      BoxConstraints.tightFor(width: 40.0, height: 40.0),
-                  child: ElevatedButton(
-                    child: Text(
-                      'OFF',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.grey,
-                      shape: CircleBorder(),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ConstrainedBox(
-                  constraints:
-                      BoxConstraints.tightFor(width: 40.0, height: 40.0),
-                  child: ElevatedButton(
-                    child: Text(
-                      'ON',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      shape: CircleBorder(),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ConstrainedBox(
-                  constraints:
-                      BoxConstraints.tightFor(width: 40.0, height: 40.0),
-                  child: ElevatedButton(
-                    child: Text(
-                      'OFF',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.grey,
-                      shape: CircleBorder(),
-                    ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Icon(
+                          Mdi.windowOpenVariant,
+                          size: 35.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Expanded(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints.tightFor(
+                              width: 35.0, height: 35.0),
+                          child: ElevatedButton(
+                            child: Text(
+                              'ON',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              shape: CircleBorder(),
+                              primary: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
