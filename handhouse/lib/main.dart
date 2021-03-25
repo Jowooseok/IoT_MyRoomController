@@ -4,6 +4,8 @@ import 'package:mdi/mdi.dart';
 
 import 'package:handhouse/statementProvider.dart';
 
+const kMainInformationBoxPadding = EdgeInsets.symmetric(horizontal: 8.0);
+
 void main() {
   runApp(
     MultiProvider(
@@ -53,18 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     Expanded(
                       flex: 2,
                       child: Icon(
-                        Mdi.bedDoubleOutline,
+                        Mdi.bedDoubleOutline, //변할 수 있음
                         size: 40.0,
-                        color: Colors.grey,
+                        color: Colors.grey, //변할 수 있음
                       ),
                     ),
                     Expanded(
                       flex: 8,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: kMainInformationBoxPadding, //변경 됨
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.amberAccent.shade100,
+                            color: Colors.amberAccent.shade100, //변경 됨
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
@@ -108,38 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(bottom: 8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Expanded(
-                        child: Icon(
-                          Mdi.windowOpenVariant,
-                          size: 35.0,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Expanded(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints.tightFor(
-                              width: 35.0, height: 35.0),
-                          child: ElevatedButton(
-                            child: Text(
-                              'ON',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              shape: CircleBorder(),
-                              primary: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
+                      expandedOnOffChangeIconM(
+                          Mdi.windowOpenVariant, Colors.orange),
+                      expandedOnOffButtonM(
+                          'ON', Colors.black, Colors.tealAccent, () {}),
                     ],
                   ),
                 ),
@@ -200,8 +179,48 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: _widgetOptions.elementAt(_selectedIndex),
+            ),
+          ),
+        ),
       ),
     );
   }
+}
+
+Expanded expandedOnOffButtonM(String onOffText, Color textColor,
+    Color buttonColor, Function buttonFunction) {
+  return Expanded(
+    flex: 2,
+    child: ElevatedButton(
+      child: Text(
+        onOffText,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 16,
+          color: textColor, //바뀔 수 있음
+        ),
+      ),
+      onPressed: buttonFunction,
+      style: ElevatedButton.styleFrom(
+        shape: CircleBorder(),
+        primary: buttonColor, //바낄수 있음
+      ),
+    ),
+  );
+}
+
+Expanded expandedOnOffChangeIconM(MdiIconData iconData, Color iconColor) {
+  return Expanded(
+    flex: 3,
+    child: Icon(
+      iconData, //바뀔 수 있음
+      size: 35.0,
+      color: iconColor, //바뀔 수 있음
+    ),
+  );
 }
