@@ -37,12 +37,85 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 2; //하단 네비게이션 바 인덱스
+  int _selectedIndex = 1; //하단 네비게이션 바 인덱스
 
   List<Widget> _widgetOptions = [
     //각각의 화면 구성
     Text('hi1'),
-    Text('hi2'),
+    Column(
+      children: [
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: SizedBox(),
+              ),
+              Expanded(
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      '19' + 'ºC', //변경
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 32, color: Colors.white),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+              ),
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: ElevatedButton(
+                        child: Text(
+                          'ON', //변경
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white, //변경
+                          ),
+                        ),
+                        onPressed: () {}, //변경
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          primary: Colors.grey, //변경가능
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ))
+            ],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            children: [],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            children: [],
+          ),
+        ),
+      ],
+    ),
     Column(
       children: [
         Expanded(
