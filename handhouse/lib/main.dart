@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '내방 날씨',
-      home: MyHomePage(title: '내방 날씨'),
+      home: MyHomePage(title: Provider.of<StatementProvider>(context).appTitle),
     );
   }
 }
@@ -42,79 +42,73 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> _widgetOptions = [
     //각각의 화면 구성
     Text('hi1'),
-    Column(
-      children: [
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: SizedBox(),
-              ),
-              Expanded(
-                child: Container(
-                  child: Center(
-                    child: Text(
-                      '19' + 'ºC', //변경
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 32, color: Colors.white),
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-              ),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: SizedBox(),
-                  ),
-                  Expanded(
-                    child: SizedBox(),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: ElevatedButton(
-                        child: Text(
-                          'ON', //변경
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white, //변경
-                          ),
-                        ),
-                        onPressed: () {}, //변경
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          primary: Colors.grey, //변경가능
-                        ),
+    Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                expandedSizedBoxM(),
+                Expanded(
+                  child: Container(
+                    child: Center(
+                      child: Text(
+                        '19' + 'ºC', //변경
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 32, color: Colors.black),
                       ),
                     ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 2.0, color: Colors.blue),
+                    ),
                   ),
-                ],
-              ))
-            ],
+                ),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    expandedSizedBoxM(),
+                    expandedSizedBoxM(),
+                    expandedDetailPageOnOffButtonM(
+                        'off', Colors.white, () {}, Colors.grey),
+                  ],
+                ))
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: Row(
-            children: [],
+          Expanded(
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                expandedSizedBoxM(),
+                expandedDetailPageUpDownButtonM(
+                    Icons.arrow_upward_rounded, () {}, Colors.red.shade300),
+                expandedSizedBoxM(),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: Row(
-            children: [],
+          Expanded(
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                expandedSizedBoxM(),
+                expandedDetailPageUpDownButtonM(
+                    Icons.arrow_downward_rounded, () {}, Colors.blue.shade300),
+                expandedSizedBoxM(),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
     Column(
       children: [
@@ -189,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       expandedOnOffChangeIconM(
-                          Mdi.windowOpenVariant, Colors.orange),
+                          Mdi.windowOpenVariant, Colors.orange, () {}),
                       expandedOnOffButtonM(
                           'ON', Colors.black, Colors.tealAccent, () {}),
                     ],
@@ -242,13 +236,12 @@ class _MyHomePageState extends State<MyHomePage> {
             label: '가습기',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: Provider.of<StatementProvider>(context).bottomNavIndex,
         selectedItemColor: Colors.amber[800],
         type: BottomNavigationBarType.fixed,
         onTap: (i) => {
-          setState(() {
-            _selectedIndex = i;
-          })
+          Provider.of<StatementProvider>(context, listen: false)
+              .setBottomNavIndex(i),
         },
       ),
       body: Center(
@@ -256,7 +249,8 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
-              child: _widgetOptions.elementAt(_selectedIndex),
+              child: _widgetOptions.elementAt(
+                  Provider.of<StatementProvider>(context).bottomNavIndex),
             ),
           ),
         ),
@@ -287,13 +281,65 @@ Expanded expandedOnOffButtonM(String onOffText, Color textColor,
   );
 }
 
-Expanded expandedOnOffChangeIconM(MdiIconData iconData, Color iconColor) {
+Expanded expandedOnOffChangeIconM(
+    MdiIconData iconData, Color iconColor, Function onPressedFunction) {
   return Expanded(
     flex: 3,
     child: Icon(
       iconData, //바뀔 수 있음
       size: 35.0,
       color: iconColor, //바뀔 수 있음
+    ),
+  );
+}
+
+Expanded expandedSizedBoxM() {
+  return Expanded(
+    child: SizedBox(),
+  );
+}
+
+Expanded expandedDetailPageOnOffButtonM(String onOffText, Color textColor,
+    Function onPressedFunction, Color buttonColor) {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      child: ElevatedButton(
+        child: Text(
+          onOffText, //변경
+          style: TextStyle(
+            fontSize: 16,
+            color: textColor, //변경
+          ),
+        ),
+        onPressed: onPressedFunction, //변경
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          primary: buttonColor, //변경가능
+        ),
+      ),
+    ),
+  );
+}
+
+Expanded expandedDetailPageUpDownButtonM(
+    IconData upOrDownIcon, Function onPressedFunction, Color buttonColor) {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ElevatedButton(
+        child: Icon(
+          upOrDownIcon, //변경 요소
+          size: 30.0,
+        ),
+        onPressed: onPressedFunction, //변경
+        style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+          primary: buttonColor, // 변경 요소
+        ),
+      ),
     ),
   );
 }
