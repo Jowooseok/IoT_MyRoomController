@@ -53,60 +53,16 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 expandedSizedBoxM(),
-                Expanded(
-                  child: Container(
-                    child: Center(
-                      child: Text(
-                        '19' + 'ºC', //변경
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 32, color: Colors.black),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 2.0, color: Colors.blue),
-                    ),
-                  ),
-                ),
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    expandedSizedBoxM(),
-                    expandedSizedBoxM(),
-                    expandedDetailPageOnOffButtonM(
-                        'off', Colors.white, () {}, Colors.grey),
-                  ],
-                ))
+                expandedValueContainerM("19", Colors.black, Colors.blue),
+                expandedColBottomButtonM(
+                    'off', Colors.white, () {}, Colors.grey),
               ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                expandedSizedBoxM(),
-                expandedDetailPageUpDownButtonM(
-                    Icons.arrow_upward_rounded, () {}, Colors.red.shade300),
-                expandedSizedBoxM(),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                expandedSizedBoxM(),
-                expandedDetailPageUpDownButtonM(
-                    Icons.arrow_downward_rounded, () {}, Colors.blue.shade300),
-                expandedSizedBoxM(),
-              ],
-            ),
-          ),
+          expandedFlexDetailPageUpDownButton(
+              Icons.arrow_upward_rounded, () {}, Colors.red.shade300),
+          expandedFlexDetailPageUpDownButton(
+              Icons.arrow_downward_rounded, () {}, Colors.blue.shade300),
         ],
       ),
     ),
@@ -116,58 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
           flex: 7,
           child: Row(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Icon(
-                        Mdi.bedDoubleOutline, //변할 수 있음
-                        size: 40.0,
-                        color: Colors.grey, //변할 수 있음
-                      ),
-                    ),
-                    Expanded(
-                      flex: 8,
-                      child: Padding(
-                        padding: kMainInformationBoxPadding, //변경 됨
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.amberAccent.shade100, //변경 됨
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Icon(
-                        Mdi.weatherSunny,
-                        size: 40.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 8,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade100,
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              homeExpandedIconContainerM(Mdi.bedDoubleOutline, Colors.grey,
+                  Colors.amberAccent.shade100),
             ],
           ),
         ),
@@ -182,9 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      expandedOnOffChangeIconM(
+                      homeExpandedOnOffChangeIconM(
                           Mdi.windowOpenVariant, Colors.orange, () {}),
-                      expandedOnOffButtonM(
+                      homeExpandedOnOffButtonM(
                           'ON', Colors.black, Colors.tealAccent, () {}),
                     ],
                   ),
@@ -259,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Expanded expandedOnOffButtonM(String onOffText, Color textColor,
+Expanded homeExpandedOnOffButtonM(String onOffText, Color textColor,
     Color buttonColor, Function buttonFunction) {
   return Expanded(
     flex: 2,
@@ -281,7 +187,7 @@ Expanded expandedOnOffButtonM(String onOffText, Color textColor,
   );
 }
 
-Expanded expandedOnOffChangeIconM(
+Expanded homeExpandedOnOffChangeIconM(
     MdiIconData iconData, Color iconColor, Function onPressedFunction) {
   return Expanded(
     flex: 3,
@@ -340,6 +246,85 @@ Expanded expandedDetailPageUpDownButtonM(
           primary: buttonColor, // 변경 요소
         ),
       ),
+    ),
+  );
+}
+
+Expanded expandedFlexDetailPageUpDownButton(
+    IconData iconData, Function function, Color color) {
+  return Expanded(
+    flex: 1,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        expandedSizedBoxM(),
+        expandedDetailPageUpDownButtonM(iconData, function, color),
+        expandedSizedBoxM(),
+      ],
+    ),
+  );
+}
+
+Expanded expandedValueContainerM(
+    String value, Color textColor, Color borderColor) {
+  return Expanded(
+    child: Container(
+      child: Center(
+        child: Text(
+          value + 'ºC', //변경
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 32, color: textColor), //변경
+        ),
+      ),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(width: 2.0, color: borderColor), //변경
+      ),
+    ),
+  );
+}
+
+Expanded expandedColBottomButtonM(
+    String text, Color textColor, Function function, Color buttonColor) {
+  return Expanded(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        expandedSizedBoxM(),
+        expandedSizedBoxM(),
+        expandedDetailPageOnOffButtonM(text, textColor, function, buttonColor),
+      ],
+    ),
+  );
+}
+
+Expanded homeExpandedIconContainerM(
+    IconData iconData, Color iconColor, Color boxColor) {
+  return Expanded(
+    child: Column(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Icon(
+            iconData, //변할 수 있음
+            size: 40.0,
+            color: iconColor, //변할 수 있음
+          ),
+        ),
+        Expanded(
+          flex: 8,
+          child: Padding(
+            padding: kMainInformationBoxPadding,
+            child: Container(
+              decoration: BoxDecoration(
+                color: boxColor, //변경 됨
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+          ),
+        ),
+      ],
     ),
   );
 }
