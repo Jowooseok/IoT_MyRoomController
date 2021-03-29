@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mdi/mdi.dart';
 
 import 'package:handhouse/statementProvider.dart';
-
-const kMainInformationBoxPadding = EdgeInsets.symmetric(horizontal: 8.0);
+import 'package:handhouse/home.dart';
 
 void main() {
   runApp(
@@ -66,43 +65,38 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     ),
-    Column(
+    MainHome(),
+    Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                expandedColBottomButtonM(
+                    '실내', Colors.white, () {}, Colors.amber),
+                expandedValueContainerM("19", Colors.black, Colors.red),
+                expandedColBottomButtonM('on', Colors.white, () {}, Colors.red),
+              ],
+            ),
+          ),
+          expandedFlexDetailPageUpDownButton(
+              Icons.arrow_upward_rounded, () {}, Colors.red.shade300),
+          expandedFlexDetailPageUpDownButton(
+              Icons.arrow_downward_rounded, () {}, Colors.blue.shade300),
+        ],
+      ),
+    ),
+    Row(
       children: [
-        Expanded(
-          flex: 7,
-          child: Row(
-            children: [
-              homeExpandedIconContainerM(Mdi.bedDoubleOutline, Colors.grey,
-                  Colors.amberAccent.shade100),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      homeExpandedOnOffChangeIconM(
-                          Mdi.windowOpenVariant, Colors.orange, () {}),
-                      homeExpandedOnOffButtonM(
-                          'ON', Colors.black, Colors.tealAccent, () {}),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        expandedSizedBoxM(),
+        expandedValueContainerM("19", Colors.black, Colors.blue),
+        expandedColBottomButtonM('ON', Colors.white, () {}, Colors.blue),
       ],
     ),
-    Text('hi4'),
-    Text('hi5'),
   ];
 
   @override
@@ -163,40 +157,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-Expanded homeExpandedOnOffButtonM(String onOffText, Color textColor,
-    Color buttonColor, Function buttonFunction) {
-  return Expanded(
-    flex: 2,
-    child: ElevatedButton(
-      child: Text(
-        onOffText,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 16,
-          color: textColor, //바뀔 수 있음
-        ),
-      ),
-      onPressed: buttonFunction,
-      style: ElevatedButton.styleFrom(
-        shape: CircleBorder(),
-        primary: buttonColor, //바낄수 있음
-      ),
-    ),
-  );
-}
-
-Expanded homeExpandedOnOffChangeIconM(
-    MdiIconData iconData, Color iconColor, Function onPressedFunction) {
-  return Expanded(
-    flex: 3,
-    child: Icon(
-      iconData, //바뀔 수 있음
-      size: 35.0,
-      color: iconColor, //바뀔 수 있음
-    ),
-  );
 }
 
 Expanded expandedSizedBoxM() {
@@ -294,36 +254,6 @@ Expanded expandedColBottomButtonM(
         expandedSizedBoxM(),
         expandedSizedBoxM(),
         expandedDetailPageOnOffButtonM(text, textColor, function, buttonColor),
-      ],
-    ),
-  );
-}
-
-Expanded homeExpandedIconContainerM(
-    IconData iconData, Color iconColor, Color boxColor) {
-  return Expanded(
-    child: Column(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Icon(
-            iconData, //변할 수 있음
-            size: 40.0,
-            color: iconColor, //변할 수 있음
-          ),
-        ),
-        Expanded(
-          flex: 8,
-          child: Padding(
-            padding: kMainInformationBoxPadding,
-            child: Container(
-              decoration: BoxDecoration(
-                color: boxColor, //변경 됨
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-          ),
-        ),
       ],
     ),
   );
