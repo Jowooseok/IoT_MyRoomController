@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Widget> _widgetOptions = [
     //각각의 화면 구성
-    Text('hi1'),
+    Text('창문'),
     Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Column(
@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed,
         onTap: (i) => {
           Provider.of<StatementProvider>(context, listen: false)
-              .setBottomNavIndex(i),
+              .bottomNavIndex = i,
         },
       ),
       body: Center(

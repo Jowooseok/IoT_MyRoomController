@@ -2,12 +2,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class StatementProvider with ChangeNotifier, DiagnosticableTreeMixin {
-  int _bottomNavIndex = 2;
+  int _bottomNavIndex = 1;
   String _appTitle = '내방날씨';
+  bool _airConOnOff = false;
+  bool _boilerOnOff = false;
+  bool _humidifierOnOff = false;
+  int _airConValue = 0;
+  int _boilerValue = 0;
+  int _humidifierValue = 0;
+
+  bool get boilerOnOff => _boilerOnOff;
+
+  set boilerOnOff(bool value) {
+    _boilerOnOff = value;
+    notifyListeners();
+  }
 
   int get bottomNavIndex => _bottomNavIndex;
 
-  void setBottomNavIndex(int value) {
+  set bottomNavIndex(int value) {
     _bottomNavIndex = value;
     switch (_bottomNavIndex) {
       case 0:
@@ -35,6 +48,41 @@ class StatementProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   void setAppTitle(String value) {
     _appTitle = value;
+    notifyListeners();
+  }
+
+  bool get humidifierOnOff => _humidifierOnOff;
+
+  set humidifierOnOff(bool value) {
+    _humidifierOnOff = value;
+    notifyListeners();
+  }
+
+  int get airConValue => _airConValue;
+
+  bool get airConOnOff => _airConOnOff;
+
+  set airConOnOff(bool value) {
+    _airConOnOff = value;
+    notifyListeners();
+  }
+
+  set airConValue(int value) {
+    _airConValue = value;
+    notifyListeners();
+  }
+
+  int get boilerValue => _boilerValue;
+
+  set boilerValue(int value) {
+    _boilerValue = value;
+    notifyListeners();
+  }
+
+  int get humidifierValue => _humidifierValue;
+
+  set humidifierValue(int value) {
+    _humidifierValue = value;
     notifyListeners();
   }
 }
