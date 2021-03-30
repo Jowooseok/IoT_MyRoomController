@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:mdi/mdi.dart';
+
+import 'package:handhouse/statementProvider.dart';
 
 const kMainInformationBoxPadding = EdgeInsets.symmetric(horizontal: 8.0);
 
 class MainHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var stateProviders = Provider.of<StatementProvider>(context);
     return Column(
       children: [
         Expanded(
@@ -31,10 +35,20 @@ class MainHome extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      homeExpandedOnOffChangeIconM(
-                          Mdi.windowOpenVariant, Colors.teal, () {}),
-                      homeExpandedOnOffButtonM(
-                          'ON', Colors.black, Colors.tealAccent, () {}),
+                      stateProviders.windowOpenClose
+                          ? homeExpandedOnOffChangeIconM(
+                              Mdi.windowOpenVariant, Colors.teal)
+                          : homeExpandedOnOffChangeIconM(
+                              Mdi.windowClosedVariant, Colors.grey),
+                      stateProviders.windowOpenClose
+                          ? homeExpandedOnOffButtonM(
+                              'OFF', Colors.white, Colors.grey, () {
+                              stateProviders.windowOpenClose = false;
+                            })
+                          : homeExpandedOnOffButtonM(
+                              'ON', Colors.black, Colors.tealAccent, () {
+                              stateProviders.windowOpenClose = true;
+                            })
                     ],
                   ),
                 ),
@@ -47,10 +61,20 @@ class MainHome extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      homeExpandedOnOffChangeIconM(
-                          Mdi.airConditioner, Colors.grey, () {}),
-                      homeExpandedOnOffButtonM(
-                          'OFF', Colors.white, Colors.grey, () {}),
+                      stateProviders.airConOnOff
+                          ? homeExpandedOnOffChangeIconM(
+                              Mdi.airConditioner, Colors.teal)
+                          : homeExpandedOnOffChangeIconM(
+                              Mdi.airConditioner, Colors.grey),
+                      stateProviders.airConOnOff
+                          ? homeExpandedOnOffButtonM(
+                              'OFF', Colors.white, Colors.grey, () {
+                              stateProviders.airConOnOff = false;
+                            })
+                          : homeExpandedOnOffButtonM(
+                              'ON', Colors.black, Colors.tealAccent, () {
+                              stateProviders.airConOnOff = true;
+                            })
                     ],
                   ),
                 ),
@@ -63,10 +87,20 @@ class MainHome extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      homeExpandedOnOffChangeIconM(
-                          Mdi.waterBoiler, Colors.teal, () {}),
-                      homeExpandedOnOffButtonM(
-                          'ON', Colors.black, Colors.tealAccent, () {}),
+                      stateProviders.boilerOnOff
+                          ? homeExpandedOnOffChangeIconM(
+                              Mdi.waterBoiler, Colors.teal)
+                          : homeExpandedOnOffChangeIconM(
+                              Mdi.waterBoilerOff, Colors.grey),
+                      stateProviders.boilerOnOff
+                          ? homeExpandedOnOffButtonM(
+                              'OFF', Colors.white, Colors.grey, () {
+                              stateProviders.boilerOnOff = false;
+                            })
+                          : homeExpandedOnOffButtonM(
+                              'ON', Colors.black, Colors.tealAccent, () {
+                              stateProviders.boilerOnOff = true;
+                            }),
                     ],
                   ),
                 ),
@@ -79,10 +113,20 @@ class MainHome extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      homeExpandedOnOffChangeIconM(
-                          Mdi.airHumidifier, Colors.teal, () {}),
-                      homeExpandedOnOffButtonM(
-                          'ON', Colors.black, Colors.tealAccent, () {}),
+                      stateProviders.humidifierOnOff
+                          ? homeExpandedOnOffChangeIconM(
+                              Mdi.airHumidifier, Colors.teal)
+                          : homeExpandedOnOffChangeIconM(
+                              Mdi.airHumidifierOff, Colors.grey),
+                      stateProviders.humidifierOnOff
+                          ? homeExpandedOnOffButtonM(
+                              'OFF', Colors.white, Colors.grey, () {
+                              stateProviders.humidifierOnOff = false;
+                            })
+                          : homeExpandedOnOffButtonM(
+                              'ON', Colors.black, Colors.tealAccent, () {
+                              stateProviders.humidifierOnOff = true;
+                            }),
                     ],
                   ),
                 ),
@@ -117,8 +161,7 @@ Expanded homeExpandedOnOffButtonM(String onOffText, Color textColor,
   );
 }
 
-Expanded homeExpandedOnOffChangeIconM(
-    MdiIconData iconData, Color iconColor, Function onPressedFunction) {
+Expanded homeExpandedOnOffChangeIconM(MdiIconData iconData, Color iconColor) {
   return Expanded(
     flex: 3,
     child: Icon(

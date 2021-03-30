@@ -2,14 +2,31 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class StatementProvider with ChangeNotifier, DiagnosticableTreeMixin {
-  int _bottomNavIndex = 1;
+  int _bottomNavIndex = 2;
   String _appTitle = '내방날씨';
   bool _airConOnOff = false;
   bool _boilerOnOff = false;
   bool _humidifierOnOff = false;
+  bool _windowOpenClose = false;
+
+  bool get windowOpenClose => _windowOpenClose;
+
+  set windowOpenClose(bool value) {
+    _windowOpenClose = value;
+    notifyListeners();
+  }
+
   int _airConValue = 0;
-  int _boilerValue = 0;
+  int _boilerValue = 18;
   int _humidifierValue = 0;
+  String _boilerMode = '실내';
+
+  String get boilerMode => _boilerMode;
+
+  set boilerMode(String value) {
+    _boilerMode = value;
+    notifyListeners();
+  }
 
   bool get boilerOnOff => _boilerOnOff;
 

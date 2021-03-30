@@ -5,6 +5,11 @@ import 'package:mdi/mdi.dart';
 import 'package:handhouse/statementProvider.dart';
 import 'package:handhouse/home.dart';
 
+const jAirConMaxTemperature = 30;
+const jAirConMinTemperature = -18;
+const jBoilerMaxTemperature = 45;
+const jBoilerMinTemperature = 18;
+
 void main() {
   runApp(
     MultiProvider(
@@ -38,69 +43,154 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1; //하단 네비게이션 바 인덱스
 
-  List<Widget> _widgetOptions = [
-    //각각의 화면 구성
-    Text('창문'),
-    Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                expandedSizedBoxM(),
-                expandedValueContainerM("19", Colors.black, Colors.blue),
-                expandedColBottomButtonM(
-                    'off', Colors.white, () {}, Colors.grey),
-              ],
-            ),
-          ),
-          expandedFlexDetailPageUpDownButton(
-              Icons.arrow_upward_rounded, () {}, Colors.red.shade300),
-          expandedFlexDetailPageUpDownButton(
-              Icons.arrow_downward_rounded, () {}, Colors.blue.shade300),
-        ],
-      ),
-    ),
-    MainHome(),
-    Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                expandedColBottomButtonM(
-                    '실내', Colors.white, () {}, Colors.amber),
-                expandedValueContainerM("19", Colors.black, Colors.red),
-                expandedColBottomButtonM('on', Colors.white, () {}, Colors.red),
-              ],
-            ),
-          ),
-          expandedFlexDetailPageUpDownButton(
-              Icons.arrow_upward_rounded, () {}, Colors.red.shade300),
-          expandedFlexDetailPageUpDownButton(
-              Icons.arrow_downward_rounded, () {}, Colors.blue.shade300),
-        ],
-      ),
-    ),
-    Row(
-      children: [
-        expandedSizedBoxM(),
-        expandedValueContainerM("19", Colors.black, Colors.blue),
-        expandedColBottomButtonM('ON', Colors.white, () {}, Colors.blue),
-      ],
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    var stateProviders = Provider.of<StatementProvider>(context);
+
+    List<Widget> _widgetOptions = [
+      //각각의 화면 구성
+      Text('창문'),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  expandedSizedBoxM(),
+                  stateProviders.airConOnOff == true
+                      ? expandedValueContainerM(
+                          stateProviders.airConValue.toString() + 'ºC',
+                          Colors.black,
+                          Colors.blue)
+                      : expandedValueContainerM(
+                          'OFF', Colors.grey, Colors.grey),
+                  stateProviders.airConOnOff == true
+                      ? expandedColBottomButtonM('OFF', Colors.white, () {
+                          stateProviders.airConOnOff = false;
+                        }, Colors.grey)
+                      : expandedColBottomButtonM('ON', Colors.white, () {
+                          stateProviders.airConOnOff = true;
+                        }, Colors.blue)
+                ],
+              ),
+            ),
+            stateProviders.airConOnOff
+                ? expandedFlexDetailPageUpDownButton(Icons.arrow_upward_rounded,
+                    () {
+                    if (stateProviders.airConOnOff &&
+                        stateProviders.airConValue < jAirConMaxTemperature) {
+                      stateProviders.airConValue =
+                          stateProviders.airConValue + 1;
+                    }
+                  }, Colors.red.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_upward_rounded, () {}, Colors.grey),
+            stateProviders.airConOnOff
+                ? expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {
+                    if (stateProviders.airConOnOff &&
+                        stateProviders.airConValue > jAirConMinTemperature) {
+                      stateProviders.airConValue =
+                          stateProviders.airConValue - 1;
+                    }
+                  }, Colors.blue.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {}, Colors.grey),
+          ],
+        ),
+      ),
+      MainHome(),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  stateProviders.boilerOnOff
+                      ? expandedColBottomButtonM(
+                          stateProviders.boilerMode, Colors.white, () {
+                          switch (stateProviders.boilerMode) {
+                            case '실내':
+                              stateProviders.boilerMode = "온수";
+                              break;
+                            case '온수':
+                              stateProviders.boilerMode = "실내";
+                              break;
+                            default:
+                              break;
+                          }
+                        }, Colors.orange)
+                      : expandedSizedBoxM(),
+                  stateProviders.boilerOnOff
+                      ? expandedValueContainerM(
+                          stateProviders.boilerValue.toString() + 'ºC',
+                          Colors.black,
+                          Colors.red)
+                      : expandedValueContainerM(
+                          "OFF", Colors.grey, Colors.grey),
+                  stateProviders.boilerOnOff
+                      ? expandedColBottomButtonM('OFF', Colors.white, () {
+                          stateProviders.boilerOnOff = false;
+                        }, Colors.grey)
+                      : expandedColBottomButtonM('ON', Colors.white, () {
+                          stateProviders.boilerOnOff = true;
+                        }, Colors.red)
+                ],
+              ),
+            ),
+            stateProviders.boilerOnOff
+                ? expandedFlexDetailPageUpDownButton(Icons.arrow_upward_rounded,
+                    () {
+                    if (stateProviders.boilerOnOff &&
+                        stateProviders.boilerValue < jBoilerMaxTemperature) {
+                      stateProviders.boilerValue =
+                          stateProviders.boilerValue + 1;
+                    }
+                  }, Colors.red.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_upward_rounded, () {}, Colors.grey),
+            stateProviders.boilerOnOff
+                ? expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {
+                    if (stateProviders.boilerOnOff &&
+                        stateProviders.boilerValue > jBoilerMinTemperature) {
+                      stateProviders.boilerValue =
+                          stateProviders.boilerValue - 1;
+                    }
+                  }, Colors.blue.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {}, Colors.grey),
+          ],
+        ),
+      ),
+      Row(
+        children: [
+          expandedSizedBoxM(),
+          stateProviders.humidifierOnOff
+              ? expandedValueContainerM(
+                  stateProviders.humidifierValue.toString() + '%',
+                  Colors.black,
+                  Colors.blue)
+              : expandedValueContainerM('OFF', Colors.grey, Colors.grey),
+          stateProviders.humidifierOnOff
+              ? expandedColBottomButtonM('OFF', Colors.white, () {
+                  stateProviders.humidifierOnOff = false;
+                }, Colors.grey)
+              : expandedColBottomButtonM('ON', Colors.white, () {
+                  stateProviders.humidifierOnOff = true;
+                }, Colors.blue),
+        ],
+      ),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -232,7 +322,7 @@ Expanded expandedValueContainerM(
     child: Container(
       child: Center(
         child: Text(
-          value + 'ºC', //변경
+          value, //변경
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 32, color: textColor), //변경
         ),
