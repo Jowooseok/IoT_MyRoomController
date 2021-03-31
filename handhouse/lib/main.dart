@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? expandedValueContainerM(
                           stateProviders.airConValue.toString() + 'ºC',
                           Colors.black,
-                          Colors.blue)
+                          Colors.teal)
                       : expandedValueContainerM(
                           'OFF', Colors.grey, Colors.grey),
                   stateProviders.airConOnOff == true
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         }, Colors.grey)
                       : expandedColBottomButtonM('ON', Colors.white, () {
                           stateProviders.airConOnOff = true;
-                        }, Colors.blue)
+                        }, Colors.teal)
                 ],
               ),
             ),
@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? expandedValueContainerM(
                           stateProviders.boilerValue.toString() + 'ºC',
                           Colors.black,
-                          Colors.red)
+                          Colors.teal)
                       : expandedValueContainerM(
                           "OFF", Colors.grey, Colors.grey),
                   stateProviders.boilerOnOff
@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         }, Colors.grey)
                       : expandedColBottomButtonM('ON', Colors.white, () {
                           stateProviders.boilerOnOff = true;
-                        }, Colors.red)
+                        }, Colors.teal)
                 ],
               ),
             ),
@@ -178,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ? expandedValueContainerM(
                   stateProviders.humidifierValue.toString() + '%',
                   Colors.black,
-                  Colors.blue)
+                  Colors.teal)
               : expandedValueContainerM('OFF', Colors.grey, Colors.grey),
           stateProviders.humidifierOnOff
               ? expandedColBottomButtonM('OFF', Colors.white, () {
@@ -186,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }, Colors.grey)
               : expandedColBottomButtonM('ON', Colors.white, () {
                   stateProviders.humidifierOnOff = true;
-                }, Colors.blue),
+                }, Colors.teal),
         ],
       ),
     ];

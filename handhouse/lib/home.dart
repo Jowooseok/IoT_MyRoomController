@@ -19,7 +19,7 @@ class MainHome extends StatelessWidget {
               homeExpandedIconContainerM(Mdi.bedDoubleOutline, Colors.grey,
                   Colors.amberAccent.shade100),
               homeExpandedIconContainerM(
-                  Mdi.weatherSunny, Colors.amber, Colors.blue.shade100),
+                  Mdi.weatherSunny, Colors.amber, Colors.blue.shade50),
             ],
           ),
         ),
