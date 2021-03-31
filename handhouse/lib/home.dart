@@ -1,10 +1,16 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:mdi/mdi.dart';
 
 import 'package:handhouse/statementProvider.dart';
 
 const kMainInformationBoxPadding = EdgeInsets.symmetric(horizontal: 8.0);
+const kMainInformationBoxMyRoomIconSize = 35.0;
+const kMainInformationBoxMyRoomTextSize = 18.0;
+const kMainInformationBoxOutdoorValueTextSize = 16.0;
 
 class MainHome extends StatelessWidget {
   @override
@@ -16,10 +22,145 @@ class MainHome extends StatelessWidget {
           flex: 7,
           child: Row(
             children: [
-              homeExpandedIconContainerM(Mdi.bedDoubleOutline, Colors.grey,
-                  Colors.amberAccent.shade100),
               homeExpandedIconContainerM(
-                  Mdi.weatherSunny, Colors.amber, Colors.blue.shade50),
+                Mdi.homeAnalytics,
+                Colors.blueGrey,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Image.asset(
+                          'assets/images/thermometer.png',
+                          width: kMainInformationBoxMyRoomIconSize,
+                          height: kMainInformationBoxMyRoomIconSize,
+                        ),
+                        Text(
+                          '17º', //변함
+                          style: TextStyle(
+                              fontSize: kMainInformationBoxMyRoomTextSize),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Image.asset(
+                          'assets/images/humidity.png',
+                          width: kMainInformationBoxMyRoomIconSize,
+                          height: kMainInformationBoxMyRoomIconSize,
+                        ),
+                        Text(
+                          stateProviders.humidifierValue.toString() + '%', //변함
+                          style: TextStyle(
+                              fontSize: kMainInformationBoxMyRoomTextSize),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              homeExpandedIconContainerM(
+                Mdi.weatherSunny,
+                Colors.blueGrey,
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.location_on),
+                                Center(
+                                  child: Text(
+                                    '복대동',
+                                    style: TextStyle(
+                                        fontSize: 16.0, color: Colors.black),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              ' ' + '3월 31일 수요일 오후 9:18',
+                              style: TextStyle(
+                                  fontSize: 10.0, color: Colors.grey.shade700),
+                              textAlign: TextAlign.start,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Image.asset(
+                                  'assets/images/thermometer.png',
+                                  width: kMainInformationBoxMyRoomIconSize,
+                                  height: kMainInformationBoxMyRoomIconSize,
+                                ),
+                                Text(
+                                  stateProviders.humidifierValue.toString() +
+                                      'º / ' +
+                                      stateProviders.humidifierValue
+                                          .toString() +
+                                      'º ', //변함
+                                  style: TextStyle(
+                                      fontSize:
+                                          kMainInformationBoxOutdoorValueTextSize),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Image.asset(
+                                  'assets/images/humidity.png',
+                                  width: kMainInformationBoxMyRoomIconSize,
+                                  height: kMainInformationBoxMyRoomIconSize,
+                                ),
+                                Text(
+                                  ' ' +
+                                      stateProviders.humidifierValue
+                                          .toString() +
+                                      '%', //변함
+                                  style: TextStyle(
+                                      fontSize:
+                                          kMainInformationBoxOutdoorValueTextSize),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
+                              color: Colors.blueGrey),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // homeExpandedIconContainerM(Mdi.weatherSunny, Colors.grey),
             ],
           ),
         ),
@@ -37,7 +178,7 @@ class MainHome extends StatelessWidget {
                     children: [
                       stateProviders.windowOpenClose
                           ? homeExpandedOnOffChangeIconM(
-                              Mdi.windowOpenVariant, Colors.teal)
+                              Mdi.windowOpenVariant, Colors.blue)
                           : homeExpandedOnOffChangeIconM(
                               Mdi.windowClosedVariant, Colors.grey),
                       stateProviders.windowOpenClose
@@ -46,7 +187,7 @@ class MainHome extends StatelessWidget {
                               stateProviders.windowOpenClose = false;
                             })
                           : homeExpandedOnOffButtonM(
-                              'ON', Colors.black, Colors.tealAccent, () {
+                              'ON', Colors.white, Colors.blue, () {
                               stateProviders.windowOpenClose = true;
                             })
                     ],
@@ -63,7 +204,7 @@ class MainHome extends StatelessWidget {
                     children: [
                       stateProviders.airConOnOff
                           ? homeExpandedOnOffChangeIconM(
-                              Mdi.airConditioner, Colors.teal)
+                              Mdi.airConditioner, Colors.blue)
                           : homeExpandedOnOffChangeIconM(
                               Mdi.airConditioner, Colors.grey),
                       stateProviders.airConOnOff
@@ -72,7 +213,7 @@ class MainHome extends StatelessWidget {
                               stateProviders.airConOnOff = false;
                             })
                           : homeExpandedOnOffButtonM(
-                              'ON', Colors.black, Colors.tealAccent, () {
+                              'ON', Colors.white, Colors.blue, () {
                               stateProviders.airConOnOff = true;
                             })
                     ],
@@ -89,7 +230,7 @@ class MainHome extends StatelessWidget {
                     children: [
                       stateProviders.boilerOnOff
                           ? homeExpandedOnOffChangeIconM(
-                              Mdi.waterBoiler, Colors.teal)
+                              Mdi.waterBoiler, Colors.blue)
                           : homeExpandedOnOffChangeIconM(
                               Mdi.waterBoilerOff, Colors.grey),
                       stateProviders.boilerOnOff
@@ -98,7 +239,7 @@ class MainHome extends StatelessWidget {
                               stateProviders.boilerOnOff = false;
                             })
                           : homeExpandedOnOffButtonM(
-                              'ON', Colors.black, Colors.tealAccent, () {
+                              'ON', Colors.white, Colors.blue, () {
                               stateProviders.boilerOnOff = true;
                             }),
                     ],
@@ -115,7 +256,7 @@ class MainHome extends StatelessWidget {
                     children: [
                       stateProviders.humidifierOnOff
                           ? homeExpandedOnOffChangeIconM(
-                              Mdi.airHumidifier, Colors.teal)
+                              Mdi.airHumidifier, Colors.blue)
                           : homeExpandedOnOffChangeIconM(
                               Mdi.airHumidifierOff, Colors.grey),
                       stateProviders.humidifierOnOff
@@ -124,7 +265,7 @@ class MainHome extends StatelessWidget {
                               stateProviders.humidifierOnOff = false;
                             })
                           : homeExpandedOnOffButtonM(
-                              'ON', Colors.black, Colors.tealAccent, () {
+                              'ON', Colors.white, Colors.blue, () {
                               stateProviders.humidifierOnOff = true;
                             }),
                     ],
@@ -173,7 +314,7 @@ Expanded homeExpandedOnOffChangeIconM(MdiIconData iconData, Color iconColor) {
 }
 
 Expanded homeExpandedIconContainerM(
-    IconData iconData, Color iconColor, Color boxColor) {
+    IconData iconData, Color iconColor, Widget childWidget) {
   return Expanded(
     child: Column(
       children: [
@@ -190,9 +331,11 @@ Expanded homeExpandedIconContainerM(
           child: Padding(
             padding: kMainInformationBoxPadding,
             child: Container(
+              child: childWidget,
               decoration: BoxDecoration(
-                color: boxColor, //변경 됨
+                //변경 됨
                 borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(width: 1.0, color: Colors.blueGrey),
               ),
             ),
           ),
