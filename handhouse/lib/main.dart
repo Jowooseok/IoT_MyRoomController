@@ -3,8 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:mdi/mdi.dart';
 
 import 'package:handhouse/statementProvider.dart';
+import 'package:handhouse/home.dart';
 
-const kMainInformationBoxPadding = EdgeInsets.symmetric(horizontal: 8.0);
+const jAirConMaxTemperature = 30;
+const jAirConMinTemperature = -18;
+const jBoilerMaxTemperature = 45;
+const jBoilerMinTemperature = 18;
 
 void main() {
   runApp(
@@ -39,74 +43,154 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1; //하단 네비게이션 바 인덱스
 
-  List<Widget> _widgetOptions = [
-    //각각의 화면 구성
-    Text('hi1'),
-    Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                expandedSizedBoxM(),
-                expandedValueContainerM("19", Colors.black, Colors.blue),
-                expandedColBottomButtonM(
-                    'off', Colors.white, () {}, Colors.grey),
-              ],
-            ),
-          ),
-          expandedFlexDetailPageUpDownButton(
-              Icons.arrow_upward_rounded, () {}, Colors.red.shade300),
-          expandedFlexDetailPageUpDownButton(
-              Icons.arrow_downward_rounded, () {}, Colors.blue.shade300),
-        ],
-      ),
-    ),
-    Column(
-      children: [
-        Expanded(
-          flex: 7,
-          child: Row(
-            children: [
-              homeExpandedIconContainerM(Mdi.bedDoubleOutline, Colors.grey,
-                  Colors.amberAccent.shade100),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      homeExpandedOnOffChangeIconM(
-                          Mdi.windowOpenVariant, Colors.orange, () {}),
-                      homeExpandedOnOffButtonM(
-                          'ON', Colors.black, Colors.tealAccent, () {}),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-    Text('hi4'),
-    Text('hi5'),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    var stateProviders = Provider.of<StatementProvider>(context);
+
+    List<Widget> _widgetOptions = [
+      //각각의 화면 구성
+      Text('창문'),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  expandedSizedBoxM(),
+                  stateProviders.airConOnOff == true
+                      ? expandedValueContainerM(
+                          stateProviders.airConValue.toString() + 'ºC',
+                          Colors.black,
+                          Colors.teal)
+                      : expandedValueContainerM(
+                          'OFF', Colors.grey, Colors.grey),
+                  stateProviders.airConOnOff == true
+                      ? expandedColBottomButtonM('OFF', Colors.white, () {
+                          stateProviders.airConOnOff = false;
+                        }, Colors.grey)
+                      : expandedColBottomButtonM('ON', Colors.white, () {
+                          stateProviders.airConOnOff = true;
+                        }, Colors.teal)
+                ],
+              ),
+            ),
+            stateProviders.airConOnOff
+                ? expandedFlexDetailPageUpDownButton(Icons.arrow_upward_rounded,
+                    () {
+                    if (stateProviders.airConOnOff &&
+                        stateProviders.airConValue < jAirConMaxTemperature) {
+                      stateProviders.airConValue =
+                          stateProviders.airConValue + 1;
+                    }
+                  }, Colors.red.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_upward_rounded, () {}, Colors.grey),
+            stateProviders.airConOnOff
+                ? expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {
+                    if (stateProviders.airConOnOff &&
+                        stateProviders.airConValue > jAirConMinTemperature) {
+                      stateProviders.airConValue =
+                          stateProviders.airConValue - 1;
+                    }
+                  }, Colors.blue.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {}, Colors.grey),
+          ],
+        ),
+      ),
+      MainHome(),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  stateProviders.boilerOnOff
+                      ? expandedColBottomButtonM(
+                          stateProviders.boilerMode, Colors.white, () {
+                          switch (stateProviders.boilerMode) {
+                            case '실내':
+                              stateProviders.boilerMode = "온수";
+                              break;
+                            case '온수':
+                              stateProviders.boilerMode = "실내";
+                              break;
+                            default:
+                              break;
+                          }
+                        }, Colors.orange)
+                      : expandedSizedBoxM(),
+                  stateProviders.boilerOnOff
+                      ? expandedValueContainerM(
+                          stateProviders.boilerValue.toString() + 'ºC',
+                          Colors.black,
+                          Colors.teal)
+                      : expandedValueContainerM(
+                          "OFF", Colors.grey, Colors.grey),
+                  stateProviders.boilerOnOff
+                      ? expandedColBottomButtonM('OFF', Colors.white, () {
+                          stateProviders.boilerOnOff = false;
+                        }, Colors.grey)
+                      : expandedColBottomButtonM('ON', Colors.white, () {
+                          stateProviders.boilerOnOff = true;
+                        }, Colors.teal)
+                ],
+              ),
+            ),
+            stateProviders.boilerOnOff
+                ? expandedFlexDetailPageUpDownButton(Icons.arrow_upward_rounded,
+                    () {
+                    if (stateProviders.boilerOnOff &&
+                        stateProviders.boilerValue < jBoilerMaxTemperature) {
+                      stateProviders.boilerValue =
+                          stateProviders.boilerValue + 1;
+                    }
+                  }, Colors.red.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_upward_rounded, () {}, Colors.grey),
+            stateProviders.boilerOnOff
+                ? expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {
+                    if (stateProviders.boilerOnOff &&
+                        stateProviders.boilerValue > jBoilerMinTemperature) {
+                      stateProviders.boilerValue =
+                          stateProviders.boilerValue - 1;
+                    }
+                  }, Colors.blue.shade300)
+                : expandedFlexDetailPageUpDownButton(
+                    Icons.arrow_downward_rounded, () {}, Colors.grey),
+          ],
+        ),
+      ),
+      Row(
+        children: [
+          expandedSizedBoxM(),
+          stateProviders.humidifierOnOff
+              ? expandedValueContainerM(
+                  stateProviders.humidifierValue.toString() + '%',
+                  Colors.black,
+                  Colors.teal)
+              : expandedValueContainerM('OFF', Colors.grey, Colors.grey),
+          stateProviders.humidifierOnOff
+              ? expandedColBottomButtonM('OFF', Colors.white, () {
+                  stateProviders.humidifierOnOff = false;
+                }, Colors.grey)
+              : expandedColBottomButtonM('ON', Colors.white, () {
+                  stateProviders.humidifierOnOff = true;
+                }, Colors.teal),
+        ],
+      ),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -147,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed,
         onTap: (i) => {
           Provider.of<StatementProvider>(context, listen: false)
-              .setBottomNavIndex(i),
+              .bottomNavIndex = i,
         },
       ),
       body: Center(
@@ -163,40 +247,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-Expanded homeExpandedOnOffButtonM(String onOffText, Color textColor,
-    Color buttonColor, Function buttonFunction) {
-  return Expanded(
-    flex: 2,
-    child: ElevatedButton(
-      child: Text(
-        onOffText,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 16,
-          color: textColor, //바뀔 수 있음
-        ),
-      ),
-      onPressed: buttonFunction,
-      style: ElevatedButton.styleFrom(
-        shape: CircleBorder(),
-        primary: buttonColor, //바낄수 있음
-      ),
-    ),
-  );
-}
-
-Expanded homeExpandedOnOffChangeIconM(
-    MdiIconData iconData, Color iconColor, Function onPressedFunction) {
-  return Expanded(
-    flex: 3,
-    child: Icon(
-      iconData, //바뀔 수 있음
-      size: 35.0,
-      color: iconColor, //바뀔 수 있음
-    ),
-  );
 }
 
 Expanded expandedSizedBoxM() {
@@ -272,7 +322,7 @@ Expanded expandedValueContainerM(
     child: Container(
       child: Center(
         child: Text(
-          value + 'ºC', //변경
+          value, //변경
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 32, color: textColor), //변경
         ),
@@ -294,36 +344,6 @@ Expanded expandedColBottomButtonM(
         expandedSizedBoxM(),
         expandedSizedBoxM(),
         expandedDetailPageOnOffButtonM(text, textColor, function, buttonColor),
-      ],
-    ),
-  );
-}
-
-Expanded homeExpandedIconContainerM(
-    IconData iconData, Color iconColor, Color boxColor) {
-  return Expanded(
-    child: Column(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Icon(
-            iconData, //변할 수 있음
-            size: 40.0,
-            color: iconColor, //변할 수 있음
-          ),
-        ),
-        Expanded(
-          flex: 8,
-          child: Padding(
-            padding: kMainInformationBoxPadding,
-            child: Container(
-              decoration: BoxDecoration(
-                color: boxColor, //변경 됨
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-          ),
-        ),
       ],
     ),
   );
