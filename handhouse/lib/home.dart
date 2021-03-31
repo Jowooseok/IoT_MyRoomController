@@ -128,7 +128,7 @@ class MainHome extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Image.asset(
-                                  'assets/images/humidity.png',
+                                  'assets/images/rain2.png',
                                   width: kMainInformationBoxMyRoomIconSize,
                                   height: kMainInformationBoxMyRoomIconSize,
                                 ),
