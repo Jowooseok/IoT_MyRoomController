@@ -27,7 +27,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '내방 날씨',
-      home: MyHomePage(title: Provider.of<StatementProvider>(context).appTitle),
+      home: Login(),
+      // home: MyHomePage(title: Provider.of<StatementProvider>(context).appTitle),
+    );
+  }
+}
+
+class Login extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [Container()],
     );
   }
 }
@@ -41,8 +53,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 1; //하단 네비게이션 바 인덱스
-
   @override
   Widget build(BuildContext context) {
     var stateProviders = Provider.of<StatementProvider>(context);
